@@ -9,16 +9,6 @@
       "port": 5432,
       "server": "127.0.0.1",
       "username": "jasonsooter"
-    },
-    {
-      "askForPassword": false,
-      "connectionTimeout": 30,
-      "database": "tulsa_zoo",
-      "dialect": "PostgreSQL",
-      "name": "tulsa_zoo",
-      "port": 5432,
-      "server": "127.0.0.1",
-      "username": "jasonsooter"
     }
   ]
 }

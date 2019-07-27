@@ -20,12 +20,12 @@ Questions? Feel free to email [practicalsqlbook@gmail.com](mailto:practicalsqlbo
 
 ## Chapters
 
-* Chapter 1: Creating Your First Database and Table
-* Chapter 2: Beginning Data Exploration with SELECT
-* Chapter 3: Understanding Data Types
-* Chapter 4: Importing and Exporting Data
-* Chapter 5: Basic Math and Stats with SQL
-* Chapter 6: Joining Tables in a Relational Database
+* ~Chapter 1: Creating Your First Database and Table~
+* ~Chapter 2: Beginning Data Exploration with SELECT~
+* ~Chapter 3: Understanding Data Types~
+* ~Chapter 4: Importing and Exporting Data~
+* ~Chapter 5: Basic Math and Stats with SQL~
+* ~Chapter 6: Joining Tables in a Relational Database~
 * Chapter 7: Table Design That Works for You
 * Chapter 8: Extracting Information by Grouping and Summarizing
 * Chapter 9: Inspecting and Modifying Data

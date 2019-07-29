@@ -12,7 +12,7 @@ Questions? Feel free to email [practicalsqlbook@gmail.com](mailto:practicalsqlbo
 
 **Data**: CSV files for you to import, also organized by chapter. **NOTE!** See the warning below about opening CSV files in Excel and text editors in the section on Getting the Code and Data.
 
-**Exercises**: The "Try It Yourself" questions and answers for each chapter, listed separately. Try working through the questions before peeking at the answers!
+**Exercises**: The "Try It Yourself" questions and [answers](https://github.com/anthonydb/practical-sql/blob/master/Try_It_Yourself/Try_It_Yourself.sql) for each chapter, listed separately. Try working through the questions before peeking at the answers!
 
 **FAQ, Updates, and Errata**: Answers to frequently asked questions,  updates, and corrections are noted at [faq-updates-errata.md](https://github.com/anthonydb/practical-sql/blob/master/faq-updates-errata.md).
 

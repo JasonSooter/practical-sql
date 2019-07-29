@@ -39,19 +39,3 @@ Questions? Feel free to email [practicalsqlbook@gmail.com](mailto:practicalsqlbo
 * Chapter 17: Maintaining Your Database
 * Chapter 18: Identifying and Telling the Story Behind Your Data
 * Appendix: Additional PostgreSQL Resources
-
-## Getting the Code and Data on Your Computer
-
-**Non-GitHub Users**
-
-You can obtain all the code and data at once by downloading this repository as a .zip file. To do that:
-
-* Select the **Clone or Download** button at top right.
-* Select **Download ZIP**
-* Unzip the file on your computer. Place it in a directory that's easy to remember so you can reference it during the exercises that include importing data to PostgreSQL.
-
-**Warning about CSV files!**: Opening CSV files with Excel could lead to data loss. Excel will remove leading zeros from numbers that are intended to be stored as text, such as zip codes. If you wish to view the contents of a CSV file, only do so with a plain-text editor and be careful not to save the file in an encoding other than UTF-8 (e.g., `Notepad.exe` on Windows defaults to ANSI).
-
-**GitHub Users**
-
-GitHub users may want to clone the repository locally and occasionally perform a `git pull` to receive any updates.

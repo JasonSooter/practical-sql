@@ -183,27 +183,26 @@ FROM
     HEADER
 );
 
+--
 -- Listing 8-3: Using count() for table row counts
-
--- SELECT
---   *
--- FROM
---   pls_fy2014_pupld14a
--- WHERE
---   stabr = 'OK'
---   AND libname = 'TULSA CITY-COUNTY LIBRARY SYSTEM';
+--
 
 SELECT
   count(*)
 FROM
   pls_fy2014_pupld14a;
 
+-- ==> 9305
+
 SELECT
   count(*)
 FROM
   pls_fy2009_pupld09a;
 
+-- ==> 9299
+--
 -- Listing 8-4: Using count() for the number of values in a column
+--
 
 SELECT
   count(salaries)
@@ -225,15 +224,38 @@ FROM
 -- Bonus: find duplicate libnames
 
 SELECT
-  libname,
-  count(libname)
-FROM
-  pls_fy2014_pupld14a
-GROUP BY
-  libname
-ORDER BY
-  count(libname)
-  DESC;
+  *
+FROM (
+  SELECT
+    libname,
+    count(libname) AS dup_count
+  FROM
+    pls_fy2014_pupld14a
+  GROUP BY
+    libname
+  ORDER BY
+    count(libname)
+    DESC) AS T
+WHERE
+  dup_count > 1;
+
+-- Bonus: find count of libaries with duplicate libnames
+
+SELECT
+  count(*)
+FROM (
+  SELECT
+    libname,
+    count(libname)
+  FROM
+    pls_fy2014_pupld14a
+  GROUP BY
+    libname
+  ORDER BY
+    count(libname)
+    DESC) AS t
+WHERE
+  count > 1;
 
 -- Bonus: see location of every Oxford Public Library
 
@@ -244,38 +266,48 @@ SELECT
 FROM
   pls_fy2014_pupld14a
 WHERE
-  libname = 'OXFORD PUBLIC LIBRARY';
+  libname LIKE 'OXFORD PUBLIC LIBRARY';
 
 -- Listing 8-6: Finding the most and fewest visits using max() and min()
 
 SELECT
-  max(visits),
-  min(visits)
+  min(visits),
+  percentile_cont(.5)
+  WITHIN GROUP (ORDER BY visits) median,
+  max(visits)
 FROM
-  pls_fy2014_pupld14a;
+  pls_fy2014_pupld14a
+WHERE
+  visits > 0;
 
 -- Listing 8-7: Using GROUP BY on the stabr column
 -- There are 56 in 2014.
 
 SELECT
-  stabr
-FROM
-  pls_fy2014_pupld14a
-GROUP BY
-  stabr
-ORDER BY
-  stabr;
+  count(*)
+FROM (
+  SELECT
+    stabr
+  FROM
+    pls_fy2014_pupld14a
+  GROUP BY
+    stabr
+  ORDER BY
+    stabr) AS t;
 
 -- Bonus: there are 55 in 2009.
 
 SELECT
-  stabr
-FROM
-  pls_fy2009_pupld09a
-GROUP BY
-  stabr
-ORDER BY
-  stabr;
+  count(*)
+FROM (
+  SELECT
+    stabr
+  FROM
+    pls_fy2009_pupld09a
+  GROUP BY
+    stabr
+  ORDER BY
+    stabr) AS t;
 
 -- Listing 8-8: Using GROUP BY on the city and stabr columns
 

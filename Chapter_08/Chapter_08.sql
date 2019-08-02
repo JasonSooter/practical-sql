@@ -338,7 +338,9 @@ ORDER BY
   count(*)
   DESC;
 
+--
 -- Listing 8-9: GROUP BY with count() on the stabr column
+--
 
 SELECT
   stabr,
@@ -351,7 +353,24 @@ ORDER BY
   count(stabr)
   DESC;
 
+--
+-- Bonus GROUP BY stabr (state abbreviation) with sum of central and branch libraries
+--
+
+SELECT
+  stabr,
+  sum(centlib) AS total_central_libraries,
+  sum(branlib) AS total_branch_libraries
+FROM
+  pls_fy2014_pupld14a
+GROUP BY
+  stabr
+ORDER BY
+  total_branch_libraries DESC;
+
+--
 -- Listing 8-10: GROUP BY with count() on the stabr and stataddr columns
+--
 
 SELECT
   stabr,
@@ -369,7 +388,8 @@ ORDER BY
 
 -- Listing 8-11: Using the sum() aggregate function to total visits to
 -- libraries in 2014 and 2009
--- 2014
+--
+-- Total visits in 2014
 
 SELECT
   sum(visits) AS visits_2014
@@ -378,7 +398,7 @@ FROM
 WHERE
   visits >= 0;
 
--- 2009
+-- Total visits in 2009
 
 SELECT
   sum(visits) AS visits_2009
@@ -387,37 +407,43 @@ FROM
 WHERE
   visits >= 0;
 
+--
 -- Listing 8-12: Using sum() to total visits on joined 2014 and 2009 library tables
+--
 
 SELECT
   sum(pls14.visits) AS visits_2014,
   sum(pls09.visits) AS visits_2009
 FROM
-  pls_fy2014_pupld14a pls14
-  JOIN pls_fy2009_pupld09a pls09 ON pls14.fscskey = pls09.fscskey
+  pls_fy2014_pupld14a AS pls14
+  JOIN pls_fy2009_pupld09a AS pls09 ON pls14.fscskey = pls09.fscskey
 WHERE
   pls14.visits >= 0
   AND pls09.visits >= 0;
 
+--
 -- Listing 8-13: Using GROUP BY to track percent change in library visits by state
+--
 
 SELECT
-  pls14.stabr,
+  pls14.stabr AS state_abbreviation,
   sum(pls14.visits) AS visits_2014,
   sum(pls09.visits) AS visits_2009,
   round((CAST(sum(pls14.visits) AS decimal (10, 1)) - sum(pls09.visits)) / sum(pls09.visits) * 100, 2) AS pct_change
 FROM
-  pls_fy2014_pupld14a pls14
-  JOIN pls_fy2009_pupld09a pls09 ON pls14.fscskey = pls09.fscskey
+  pls_fy2014_pupld14a AS pls14
+  JOIN pls_fy2009_pupld09a AS pls09 ON pls14.fscskey = pls09.fscskey
 WHERE
   pls14.visits >= 0
   AND pls09.visits >= 0
 GROUP BY
-  pls14.stabr
+  state_abbreviation
 ORDER BY
   pct_change DESC;
 
+--
 -- Listing 8-14: Using HAVING to filter the results of an aggregate query
+--
 
 SELECT
   pls14.stabr,
@@ -437,3 +463,7 @@ HAVING
 ORDER BY
   pct_change DESC;
 
+--
+-- Exercises
+--
+-- TODO

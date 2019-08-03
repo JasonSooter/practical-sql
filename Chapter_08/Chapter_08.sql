@@ -466,4 +466,143 @@ ORDER BY
 --
 -- Exercises
 --
--- TODO
+-- Exercise 1
+--
+-- We saw that library visits have declined recently in most places. But what is the pattern in the use of technology
+-- in libraries? Both the 2014 and 2009 library survey tables contain the columns gpterms (the number of
+-- Internet-connected computers used by the public) and pitusr (uses of public Internet computers per year).
+-- Modify the code in Listing 8-13 to calculate the percent change in the sum of each column over time.
+-- Watch out for negative values!
+
+SELECT
+  pls14.stabr AS state_abbreviation,
+  sum(pls14.gpterms) AS gpterms_2014,
+  sum(pls09.gpterms) AS gpterms_2009,
+  round((CAST(sum(pls14.gpterms) AS decimal (10, 1)) - sum(pls09.gpterms)) / sum(pls09.gpterms) * 100, 2) AS pct_change_gpterms,
+  sum(pls14.pitusr) AS pitusr_2014,
+  sum(pls09.pitusr) AS pitusr_2009,
+  round((CAST(sum(pls14.pitusr) AS decimal (10, 1)) - sum(pls09.pitusr)) / sum(pls09.pitusr) * 100, 2) AS pct_change_pitusr
+FROM
+  pls_fy2014_pupld14a AS pls14
+  JOIN pls_fy2009_pupld09a AS pls09 ON pls14.fscskey = pls09.fscskey
+WHERE
+  pls14.gpterms >= 0
+  AND pls09.gpterms >= 0
+  AND pls14.pitusr >= 0
+  AND pls09.pitusr >= 0
+GROUP BY
+  state_abbreviation
+ORDER BY
+  pct_change_gpterms DESC;
+
+-- Exercise 2
+--
+-- Both library survey tables contain a column called obereg, a two-digit Bureau of Economic Analysis Code that
+-- classifies each library agency according to a region of the United States, such as New England, Rocky Mountains,
+-- and so on. Just as we calculated the percent change in visits grouped by state, do the same to group percent
+-- changes in visits by U.S region using obereg. Consult the survey documentation to find the meaning of each region
+-- code. For a bonus challenge, create a table with the obereg code as the primary key and the region name as text,
+-- and join it to the summary query to group by the region name rather than the code.
+--
+-- Using GROUP BY to track percent change in library visits by region (obereg)
+
+SELECT
+  pls14.obereg,
+  sum(pls14.visits) AS visits_2014,
+  sum(pls09.visits) AS visits_2009,
+  round((CAST(sum(pls14.visits) AS decimal (10, 1)) - sum(pls09.visits)) / sum(pls09.visits) * 100, 2) AS pct_change
+FROM
+  pls_fy2014_pupld14a AS pls14
+  JOIN pls_fy2009_pupld09a AS pls09 ON pls14.fscskey = pls09.fscskey
+WHERE
+  pls14.visits >= 0
+  AND pls09.visits >= 0
+GROUP BY
+  pls14.obereg
+ORDER BY
+  pct_change DESC;
+
+-- Create a table with the obereg code as the primary key and the region name as text
+
+CREATE TABLE obereg_code_names (
+  obereg varchar(2) NOT NULL CONSTRAINT obereg_key PRIMARY KEY,
+  region_name varchar(100)
+);
+
+INSERT INTO obereg_code_names (obereg,
+  region_name)
+    VALUES ('01',
+      'New England (CT ME MA NH RI VT)'),
+    ('02',
+      'Mid East (DE DC MD NJ NY PA)'),
+    ('03',
+      'Great Lakes (IL IN MI OH WI)'),
+    ('04',
+      'Plains (IA KS MN MO NE ND SD)'),
+    ('05',
+      'Southeast (AL AR FL GA KY LA MS NC SC TN VA WV)'),
+    ('06',
+      'Soutwest (AZ NM OK TX)'),
+    ('07',
+      'Rocky Mountains (CO ID MT UT WY)'),
+    ('08',
+      'Far West (AK CA HI NV OR WA)'),
+    ('09',
+      'Outlying Areas (AS GU MP PR VI)');
+SELECT
+  *
+FROM
+  obereg_code_names;
+
+-- Using GROUP BY to track percent change in library visits by region (obereg)
+-- Also join on obereg_code_names to display text instead of codes
+
+SELECT
+  obereg_code_names.region_name AS region_name,
+  sum(pls14.visits) AS visits_2014,
+  sum(pls09.visits) AS visits_2009,
+  round((CAST(sum(pls14.visits) AS decimal (10, 1)) - sum(pls09.visits)) / sum(pls09.visits) * 100, 2) AS pct_change
+FROM
+  pls_fy2014_pupld14a AS pls14
+  JOIN pls_fy2009_pupld09a AS pls09 ON pls14.fscskey = pls09.fscskey
+  JOIN obereg_code_names ON pls14.obereg = obereg_code_names.obereg
+WHERE
+  pls14.visits >= 0
+  AND pls09.visits >= 0
+GROUP BY
+  region_name
+ORDER BY
+  pct_change DESC;
+
+-- Exercise 3
+--
+-- Thinking back to the types of joins you learned in Chapter 6, which join
+-- type will show you all the rows in both tables, including those without a
+-- match? Write such a query and add an IS NULL filter in a WHERE clause to
+-- show agencies not included in one or the other table.
+--
+-- A FULL OUTER JOIN will show all rows in both tables. Using the IS NULL statements
+-- in the WHERE clause limit results to those that do not appear in both tables.
+
+SELECT
+  pls14.fscskey,
+  pls14.libname,
+  pls14.city,
+  pls14.stabr,
+  pls14.statstru,
+  pls14.c_admin,
+  pls14.branlib,
+  pls09.fscskey,
+  pls09.libname,
+  pls09.city,
+  pls09.stabr,
+  pls09.statstru,
+  pls09.c_admin,
+  pls09.branlib
+FROM
+  pls_fy2014_pupld14a AS pls14
+  FULL OUTER JOIN pls_fy2009_pupld09a AS pls09 ON pls14.fscskey = pls09.fscskey
+WHERE
+  pls14.fscskey IS NULL
+  OR pls09.fscskey IS NULL;
+

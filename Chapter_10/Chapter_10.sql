@@ -18,7 +18,7 @@ CREATE TABLE acs_2011_2015_stats (
 
 COPY acs_2011_2015_stats
 FROM
-  'C:\YourDirectory\acs_2011_2015_stats.csv' WITH (
+  '/Users/jasonsooter/dev-space/practical-sql/Chapter_10/acs_2011_2015_stats.csv' WITH (
     FORMAT CSV,
     HEADER,
     DELIMITER ',');
@@ -28,11 +28,16 @@ SELECT
 FROM
   acs_2011_2015_stats;
 
--- Listing 10-2: Using corr(Y, X) to measure the relationship between
--- education and income
-
+-- Listing 10-2: Using corr(Y, X) to measure the relationship between education and income
 SELECT
-  corr(median_hh_income, pct_bachelors_higher) AS bachelors_income_r
+  corr(median_hh_income, pct_bachelors_higher) AS bachelors_income_corr
+FROM
+  acs_2011_2015_stats;
+
+-- Export data to be analyzed as a scatter plot
+SELECT
+  median_hh_income,
+  pct_bachelors_higher
 FROM
   acs_2011_2015_stats;
 

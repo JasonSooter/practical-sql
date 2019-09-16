@@ -56,7 +56,9 @@ SELECT
 FROM
   acs_2011_2015_stats;
 
+-- Bookmark
 -- Listing 10-5: Calculating the coefficient of determination, or r-squared
+
 SELECT
   round(regr_r2(median_hh_income, pct_bachelors_higher)::numeric, 3) AS r_squared
 FROM

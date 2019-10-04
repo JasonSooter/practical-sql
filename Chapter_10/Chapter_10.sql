@@ -56,9 +56,7 @@ SELECT
 FROM
   acs_2011_2015_stats;
 
--- Bookmark
 -- Listing 10-5: Calculating the coefficient of determination, or r-squared
-
 SELECT
   round(regr_r2(median_hh_income, pct_bachelors_higher)::numeric, 3) AS r_squared
 FROM
@@ -118,7 +116,9 @@ SELECT
 FROM
   widget_companies;
 
+-- Bookmark
 -- Listing 10-7: Applying rank() within groups using PARTITION BY
+
 CREATE TABLE store_sales (
   store varchar(30),
   category varchar(30) NOT NULL,
